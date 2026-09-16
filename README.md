@@ -33,6 +33,29 @@ npm run dev
 ```
 
 Untuk Android, lihat `ANDROID_SETUP.md`. Aplikasi Android memakai project Kotlin + Jetpack Compose dan Supabase yang sama.
+
+## Deploy admin web ke GitHub Pages
+
+Workflow GitHub Actions akan membangun dan menerbitkan `admin-web` ke GitHub Pages
+setiap kali perubahan pada `admin-web/` masuk ke branch `main`.
+
+Sebelum deployment pertama:
+
+1. Pada repository, buka **Settings -> Pages** dan pilih **GitHub Actions** sebagai source.
+2. Buka **Settings -> Secrets and variables -> Actions**.
+3. Tambahkan secret `VITE_SUPABASE_URL` berisi URL project Supabase.
+4. Tambahkan secret `VITE_SUPABASE_ANON_KEY` berisi anon/publishable key Supabase.
+5. Push atau merge perubahan ke `main`, atau jalankan workflow **Deploy admin web** secara manual.
+
+URL aplikasi:
+
+```text
+https://cakmat0107.github.io/AbsensiPlus/
+```
+
+Jangan tambahkan service-role key ke repository atau secret frontend. GitHub Pages
+hanya menerbitkan panel admin; backend tetap menggunakan Supabase.
+
 ## Setup Supabase
 
 Jalankan migration secara berurutan di Supabase SQL Editor:
