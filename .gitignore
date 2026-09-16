@@ -1,0 +1,13 @@
+__pycache__/
+*.py[cod]
+.streamlit/secrets.toml
+absensiplus.db
+admin-web/node_modules/
+admin-web/dist/
+admin-web/.env
+android-app/local.properties
+android-app/**/build/
+android-app/.gradle/
+android-app/.idea/
+android-app/.kotlin/
+admin-web/dist/
