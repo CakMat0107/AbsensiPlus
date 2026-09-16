@@ -1,0 +1,83 @@
+:root { font-family: Inter, ui-sans-serif, system-ui, sans-serif; color: #172033; background: #f6f8fc; font-synthesis: none; }
+* { box-sizing: border-box; }
+body { margin: 0; }
+.shell { min-height: 100vh; display: flex; }
+aside { width: 260px; padding: 32px 22px; background: #102542; color: white; display: flex; flex-direction: column; }
+.brand { font-size: 24px; font-weight: 800; letter-spacing: -.8px; }
+.brand span { color: #69d2c5; }
+.muted { color: #718096; line-height: 1.5; }
+aside .muted { color: #9eb0c7; font-size: 13px; }
+nav { display: grid; gap: 8px; margin-top: 36px; }
+.nav-item { border: 0; padding: 12px 14px; border-radius: 9px; color: #cbd8e9; background: transparent; text-align: left; font: inherit; font-size: 14px; cursor: pointer; }
+.nav-item.active, .nav-item:hover { background: #1d3b60; color: white; }
+.connection { margin-top: auto; color: #b4c2d4; font-size: 12px; display: flex; align-items: center; gap: 8px; }
+.dot { width: 8px; height: 8px; border-radius: 50%; background: #efb055; }
+.dot.online { background: #69d2c5; }
+.login-shell { min-height: 100vh; display: grid; place-items: center; padding: 24px; background: #eef3f9; }
+.login-card { width: min(100%, 420px); padding: 36px; background: white; border: 1px solid #e5ebf2; border-radius: 16px; box-shadow: 0 12px 36px #1c315015; }
+.login-card h1 { font-size: 28px; margin: 8px 0; }
+label { display: grid; gap: 7px; margin-top: 18px; color: #32445f; font-size: 14px; font-weight: 600; }
+input { width: 100%; border: 1px solid #d5deea; border-radius: 8px; padding: 12px; font: inherit; }
+select { width: 100%; border: 1px solid #d5deea; border-radius: 8px; padding: 12px; font: inherit; background: white; color: #32445f; }
+.primary-button { width: 100%; margin-top: 24px; border: 0; border-radius: 8px; padding: 13px; color: white; background: #2563eb; font-weight: 700; cursor: pointer; }
+.primary-button:disabled { opacity: .6; cursor: wait; }
+.error, .alert { color: #a33c3c; background: #fff1f1; border-radius: 8px; padding: 11px 13px; font-size: 13px; }
+.alert { margin-top: 24px; }
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+th, td { padding: 13px 12px; border-bottom: 1px solid #edf1f6; text-align: left; white-space: nowrap; }
+th { color: #718096; font-size: 11px; text-transform: uppercase; letter-spacing: .6px; }
+.request-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+.request-panel h2 { margin-bottom: 20px; }
+.request-card { display: flex; justify-content: space-between; gap: 14px; padding: 16px 0; border-top: 1px solid #edf1f6; }
+.request-card p { margin: 6px 0 0; font-size: 13px; }
+.request-actions { display: flex; align-items: center; align-content: flex-start; flex-wrap: wrap; justify-content: flex-end; gap: 7px; min-width: 112px; }
+.status { border-radius: 99px; padding: 5px 9px; background: #fff5dc; color: #966b13; font-size: 11px; }
+.status.disetujui { background: #e4f7f3; color: #237f74; }
+.status.ditolak { background: #fff1f1; color: #a33c3c; }
+.approve, .reject { border: 0; border-radius: 6px; padding: 7px 9px; color: white; font-size: 11px; cursor: pointer; }
+.approve { background: #249b8e; }
+.reject { background: #c75555; }
+.date-input { border: 1px solid #d5deea; border-radius: 8px; padding: 10px; font: inherit; color: #32445f; }
+.report-grid { display: grid; gap: 20px; }
+.report-filters { display: flex; gap: 8px; }
+.report-filters select { min-width: 130px; padding: 9px; }
+.status.hadir { background: #e4f7f3; color: #237f74; }
+.status.izin, .status.sakit { background: #fff5dc; color: #966b13; }
+.status.alpa { background: #fff1f1; color: #a33c3c; }
+.schedule-form { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin: 22px 0 28px; align-items: end; }
+.schedule-form label { margin-top: 0; }
+.schedule-submit { width: auto; margin-top: 0; padding: 12px 18px; }
+.school-data-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+.school-data-grid .panel { min-height: 0; }
+.student-panel { grid-column: 1 / -1; }
+.inline-form, .student-form { display: flex; gap: 8px; margin: 18px 0; }
+.inline-form input, .student-form input, .student-form select { flex: 1; min-width: 0; }
+.data-line { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 11px 0; border-top: 1px solid #edf1f6; }
+.data-line small { color: #718096; }
+.row-actions { display: flex; gap: 6px; }
+.user-role { display: block; color: #718096; margin-top: 4px; }
+.user-help { margin-top: 22px; font-size: 13px; }
+.name-editor { display: flex; flex: 1; gap: 8px; align-items: center; }
+.name-editor input { flex: 1; min-width: 160px; }
+.compact-select { width: auto; min-width: 120px; padding: 7px; font-size: 12px; }
+@media (max-width: 800px) { .request-grid { grid-template-columns: 1fr; } }
+.content { max-width: 1200px; width: 100%; padding: 46px 56px; margin: auto; }
+header, .panel-title { display: flex; justify-content: space-between; align-items: flex-start; gap: 20px; }
+.eyebrow { color: #4975d1; font-size: 11px; font-weight: 800; letter-spacing: 1.5px; margin: 0 0 8px; }
+h1 { font-size: 34px; margin: 0; letter-spacing: -1px; }
+h2 { font-size: 19px; margin: 0; }
+h3 { margin: 12px 0 4px; }
+.profile, .secondary { border: 1px solid #dce4ef; background: white; border-radius: 8px; padding: 11px 14px; color: #32445f; }
+.cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin: 38px 0 24px; }
+.card, .panel { background: white; border: 1px solid #e5ebf2; border-radius: 14px; box-shadow: 0 4px 18px #1c31500b; }
+.card { padding: 22px; }
+.card strong { display: block; font-size: 32px; margin: 20px 0 7px; }
+.card small { color: #9aa7b8; }
+.panel { padding: 26px; min-height: 330px; }
+.empty { display: grid; place-items: center; text-align: center; min-height: 220px; }
+.empty-icon { width: 42px; height: 42px; display: grid; place-items: center; border-radius: 50%; background: #e4f7f3; color: #239b8d; font-size: 20px; }
+@media (max-width: 760px) { aside { width: 190px; } .content { padding: 30px 22px; } .cards { grid-template-columns: 1fr; } }
+@media (max-width: 760px) { .schedule-form { grid-template-columns: 1fr; } }
+@media (max-width: 760px) { .school-data-grid { grid-template-columns: 1fr; } .student-panel { grid-column: auto; } .student-form { flex-direction: column; } }
+@media (max-width: 760px) { .report-filters { flex-direction: column; } .panel-title { flex-wrap: wrap; } }
