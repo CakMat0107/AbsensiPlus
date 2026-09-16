@@ -19,6 +19,19 @@ type Metrics = {
 type View = "dashboard" | "pengguna" | "kelas" | "jadwal" | "pengajuan" | "laporan";
 
 const emptyMetrics: Metrics = { attendance: 0, requests: 0, assignments: 0 };
+function localDateKey(date = new Date()) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
+function displayDate(dateKey: string) {
+  return new Intl.DateTimeFormat("id-ID", {
+    dateStyle: "full",
+  }).format(new Date(`${dateKey}T00:00:00`));
+}
+
 function errorMessage(error: unknown, fallback: string) {
   if (error && typeof error === "object" && "message" in error) {
     return String((error as { message: string }).message);
@@ -63,13 +76,14 @@ function App({ session }: { session: Session }) {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [metrics, setMetrics] = useState(emptyMetrics);
   const [error, setError] = useState("");
+  const [today, setToday] = useState(localDateKey);
 
   async function loadData() {
     if (!supabase) return;
     const [profileResult, attendanceResult, requestsResult, assignmentsResult] = await Promise.all([
       supabase.from("profiles").select("full_name, role").eq("id", session.user.id).maybeSingle(),
       supabase.from("staff_attendance").select("id", { count: "exact", head: true })
-        .eq("attendance_date", new Date().toISOString().slice(0, 10)),
+        .eq("attendance_date", today),
       supabase.from("requests").select("id", { count: "exact", head: true }).eq("status", "menunggu"),
       supabase.from("substitute_assignments").select("id", { count: "exact", head: true })
         .eq("status", "menunggu"),
@@ -99,8 +113,18 @@ function App({ session }: { session: Session }) {
       .on("postgres_changes", { event: "*", schema: "public", table: "requests" }, loadData)
       .on("postgres_changes", { event: "*", schema: "public", table: "substitute_assignments" }, loadData)
       .subscribe();
-    return () => { void client.removeChannel(channel); };
-  }, [session.user.id]);
+    const dateTimer = window.setInterval(() => {
+      const nextDate = localDateKey();
+      setToday((currentDate) => {
+        if (currentDate === nextDate) return currentDate;
+        return nextDate;
+      });
+    }, 60_000);
+    return () => {
+      window.clearInterval(dateTimer);
+      void client.removeChannel(channel);
+    };
+  }, [session.user.id, today]);
 
   async function signOut() {
     await supabase?.auth.signOut();
@@ -131,7 +155,7 @@ function App({ session }: { session: Session }) {
           <button className="profile" onClick={signOut}>{profile?.full_name ?? session.user.email} <span>Keluar</span></button>
         </header>
         {error && <div className="alert">{error}. Pastikan migration database sudah dijalankan.</div>}
-        {view === "dashboard" && <Dashboard metrics={metrics} onRefresh={loadData} />}
+        {view === "dashboard" && <Dashboard metrics={metrics} onRefresh={loadData} today={today} />}
         {view !== "dashboard" && view !== "laporan" && view !== "pengajuan" && view !== "jadwal" && view !== "kelas" && view !== "pengguna" && <DataView view={view} />}
         {view === "pengguna" && <UsersView />}
         {view === "kelas" && <SchoolDataView userId={session.user.id} />}
@@ -162,10 +186,10 @@ function viewDescription(view: View) {
   }[view];
 }
 
-function Dashboard({ metrics, onRefresh }: { metrics: Metrics; onRefresh: () => void }) {
+function Dashboard({ metrics, onRefresh, today }: { metrics: Metrics; onRefresh: () => void; today: string }) {
   return <>
     <div className="cards">
-      <Metric label="Kehadiran hari ini" value={metrics.attendance} detail="staf tercatat" />
+      <Metric label={`Kehadiran ${displayDate(today)}`} value={metrics.attendance} detail="staf tercatat" />
       <Metric label="Pengajuan menunggu" value={metrics.requests} detail="perlu ditinjau" />
       <Metric label="Penugasan aktif" value={metrics.assignments} detail="menunggu persetujuan" />
     </div>
@@ -550,8 +574,17 @@ function ReportsView() {
   const [classes, setClasses] = useState<Option[]>([]);
   const [classId, setClassId] = useState("");
   const [status, setStatus] = useState("");
-  const [date, setDate] = useState(new Date().toISOString().slice(0, 10));
+  const [date, setDate] = useState(localDateKey);
   const [error, setError] = useState("");
+  useEffect(() => {
+    const dateTimer = window.setInterval(() => {
+      setDate((currentDate) => {
+        const nextDate = localDateKey();
+        return currentDate === nextDate ? currentDate : nextDate;
+      });
+    }, 60_000);
+    return () => window.clearInterval(dateTimer);
+  }, []);
   useEffect(() => {
     if (!supabase) return;
     Promise.all([
